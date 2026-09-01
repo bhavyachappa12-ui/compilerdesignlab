@@ -1,0 +1,5 @@
+int main(){
+ a=4.5;
+ b=3.4;
+ c=(a*b)>b?"TRUE":"FALSE" ;
+}
