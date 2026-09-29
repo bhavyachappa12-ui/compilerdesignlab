@@ -10,6 +10,10 @@ from sly import Lexer
 
 
 class TinyCStrLexer(Lexer):
+    def __init__(self, error_sink=None):
+        super().__init__()
+        self.error_sink = error_sink
+
     # ------------------------------------------------------------------
     # Full Stage 1a + 1b token set is declared here
     # ------------------------------------------------------------------
@@ -50,7 +54,7 @@ class TinyCStrLexer(Lexer):
     @_(r'[a-zA-Z_][a-zA-Z0-9_]*')
     def ID(self, t):
         t.type=self.keywords.get(t.value,'ID')
-        return t
+       # return t
 
     # TODO(week-2, stage-1a): INTEGER — one or more decimal digits.
     INTEGER = r'[0-9_]+'
@@ -79,8 +83,8 @@ class TinyCStrLexer(Lexer):
     # ------------------------------------------------------------------
     # Error handling
     # ------------------------------------------------------------------
-    def error(self, t):
-        """
+    '''def error(self, t):
+    
         TODO(week-2, stage-1a): report the illegal character and current
         line number in EXACTLY this format:
 
@@ -90,10 +94,18 @@ class TinyCStrLexer(Lexer):
 
         Then advance past the single bad character so lexing continues
         (self.index += 1) rather than stopping at the first error.
+    
+       print(f"ERROR:{t.value[0]}{t.lineno}")
+       self.lineno+=1
+       raise NotImplementedError("implement TinyCStrLexer.error()")'''
+    def error(self, t):
         """
-        print(f"ERROR:{t.value[0]}{t.lineno}")
-        self.lineno+=1
-       # raise NotImplementedError("implement TinyCStrLexer.error()")
+        Report illegal character and continue lexing.
+        """
+        print(f"ERROR {t.value[0]} {t.lineno}")
+
+        self.index += 1
+    
 
 
 if __name__ == '__main__':
